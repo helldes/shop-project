@@ -78,7 +78,7 @@
                                             }
                                         });
                                     } else {
-                                        alert("Phone number format:  XXX-XXX-XXXX")
+                                        alert("Phone number format:  (XXX)-XXX-XXXX")
                                     }
                                 }
                             }
