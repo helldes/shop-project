@@ -24,13 +24,14 @@
 <body>
 <script>
   function showOrderDetails(idOrder) {
+    document.getElementById('hideIdOrder').value = idOrder;
     $('#showOrderDetails').empty();
     $.get("${pageContext.request.contextPath}/orders/"+idOrder, function (data) {
       $('#showOrderDetails').html(data);
     });
   }
   function show(path) {
-    $.get("${pageContext.request.contextPath}/orders" + path, function (data) {
+    $.get("${pageContext.request.contextPath}" + path, function (data) {
       $("#myContent").html(data);
     });
   }
@@ -94,7 +95,7 @@
   <div id="sidebar-wrapper" class="col-md-1">
     <div id="sidebar" class="">
       <ul class="nav list-group">
-        <li onclick="show('/orders_get')"><a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>Orders</a>
+        <li onclick="show('/orders/orders_get')"><a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>Orders</a>
         </li>
 
         <li onclick="showNews('/news_get')"><a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>News</a>

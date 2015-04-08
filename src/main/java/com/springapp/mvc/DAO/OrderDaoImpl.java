@@ -40,4 +40,12 @@ public class OrderDaoImpl extends GenericDaoImpl<Orders> implements OrderDao {
                 .add(Restrictions.eq("user", user))
                 .list();
     }
+
+    @Override
+    public List<Orders> getOrdersByPeriodDate(Date date1, Date date2) {
+        return sessionFactory.getCurrentSession().createCriteria(Orders.class)
+                .add(Restrictions.ge("date", date1))
+                .add(Restrictions.lt("date", date2))
+                .list();
+    }
 }

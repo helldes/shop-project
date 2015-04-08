@@ -48,6 +48,13 @@
 
   }
 
+  function showUserData(id) {
+    $.get("${pageContext.request.contextPath}/getUserData/" + id, function (data) {
+      $("#myContent").html(data);
+    });
+  }
+
+
 </script>
 
 <div id="header" class="navbar navbar-default navbar-fixed-top">
@@ -85,10 +92,7 @@
         <li onclick="showNews('/news_get')"><a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>News</a>
         </li>
 
-        <li onclick=""><a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>My Account</a>
-        </li>
-
-        <li onclick="showStatistic('/statistic_CountBuyProduct')"><a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>Statistic</a>
+        <li onclick="showUserData(${user.id})"><a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>Мои данные</a>
         </li>
 
       </ul>

@@ -3,26 +3,22 @@ package com.springapp.mvc.controller;
 import com.springapp.mvc.DTO.UserDTO;
 import com.springapp.mvc.Entity.*;
 import com.springapp.mvc.Service.Interface.*;
+import com.springapp.mvc.Util.ComparatorSortPriceAZ;
+import com.springapp.mvc.Util.ComparatorSortPriceZA;
 import com.springapp.mvc.Util.HechText;
+import com.springapp.mvc.Util.MapValueComparator;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Controller
@@ -79,6 +75,8 @@ public class MainController {
     public String get(@PathVariable Integer id_path,
                       ModelMap model
     ) {
+        model.addAttribute("category", categoryService.read(id_path));
+
         if (categoryService.read(id_path).getParent() == null) {
             Category parentCategory = categoryService.read(id_path);
             List<Category> list = categoryService.getChildren(parentCategory);
@@ -100,6 +98,107 @@ public class MainController {
                 return "noProduct";
             }
         }
+    }
+
+
+    @RequestMapping(value = "/sortProducts/{idSelect}/{idCategory}", method = RequestMethod.GET)
+    public String productsSortBy(
+            @PathVariable int idSelect,
+            @PathVariable int idCategory,
+            ModelMap model
+    ) {
+        model.addAttribute("category", categoryService.read(idCategory));
+        switch (idSelect) {
+            case 0: {
+                return "redirect:/categories/" + idCategory;
+            }
+            case 1: {
+                if (categoryService.read(idCategory).getParent() == null) {
+                    Category parentCategory = categoryService.read(idCategory);
+                    List<Category> list = categoryService.getChildren(parentCategory);
+                    List<Product> products = new LinkedList<Product>();
+
+                    Comparator comparator = new ComparatorSortPriceAZ();
+                    for (Category category : list) {
+                        products.addAll(productService.getProductsByCategory(category));
+                    }
+                    Collections.sort(products, comparator);
+                    model.addAttribute("ProductsByCategory", products);
+                    return "showProducts";
+                } else {
+                    List<Product> products = productService.getProductsByCategory(categoryService.read(idCategory));
+
+                    Comparator comparator = new ComparatorSortPriceAZ();
+                    Collections.sort(products, comparator);
+                    model.addAttribute("ProductsByCategory", products);
+                    return "showProducts";
+                }
+
+            }
+            case 2: {
+                if (categoryService.read(idCategory).getParent() == null) {
+                    Category parentCategory = categoryService.read(idCategory);
+                    List<Category> list = categoryService.getChildren(parentCategory);
+                    List<Product> products = new LinkedList<Product>();
+                    Comparator comparator = new ComparatorSortPriceZA();
+                    for (Category category : list) {
+                        products.addAll(productService.getProductsByCategory(category));
+                    }
+                    Collections.sort(products, comparator);
+                    model.addAttribute("ProductsByCategory", products);
+                    return "showProducts";
+                } else {
+                    List<Product> products = productService.getProductsByCategory(categoryService.read(idCategory));
+                    Comparator comparator = new ComparatorSortPriceZA();
+                    Collections.sort(products, comparator);
+                    model.addAttribute("ProductsByCategory", products);
+                    return "showProducts";
+                }
+            }
+            case 3: {
+                Map map = new HashMap();
+                MapValueComparator bvc = new MapValueComparator(map);
+                TreeMap<Product, Integer> sorted_map = new TreeMap<Product, Integer>(bvc);
+                if (categoryService.read(idCategory).getParent() == null) {
+                    Category parentCategory = categoryService.read(idCategory);
+                    List<Category> list = categoryService.getChildren(parentCategory);
+                    List<Product> products = new LinkedList<Product>();
+                    for (Category category : list) {
+                        products.addAll(productService.getProductsByCategory(category));
+                    }
+                    for (Product product : products) {
+                        List<OrderDetails> listOrderDetails = orderDetailsService.getOrderDetailsByProduct(product);
+                        int count = 0;
+                        for (OrderDetails orderDetails : listOrderDetails) {
+                            count += orderDetails.getQuantity();
+                        }
+                        map.put(product, count);
+                    }
+                    sorted_map.putAll(map);
+                    Set<Product> setProduct = new LinkedHashSet<>();
+                    setProduct.addAll(sorted_map.keySet());
+                    model.addAttribute("ProductsByCategory", setProduct);
+                    return "showProducts";
+                } else {
+                    List<Product> products = productService.getProductsByCategory(categoryService.read(idCategory));
+                    /*products*/
+                    for (Product product : products) {
+                        List<OrderDetails> listOrderDetails = orderDetailsService.getOrderDetailsByProduct(product);
+                        int count = 0;
+                        for (OrderDetails orderDetails : listOrderDetails) {
+                            count += orderDetails.getQuantity();
+                        }
+                        map.put(product, count);
+                    }
+                    sorted_map.putAll(map);
+                    Set<Product> setProduct = new LinkedHashSet<>();
+                    setProduct.addAll(sorted_map.keySet());
+                    model.addAttribute("ProductsByCategory", setProduct);
+                    return "showProducts";
+                }
+            }
+        }
+        return null;
     }
 
 
@@ -299,32 +398,34 @@ public class MainController {
         }
         return "main";
     }
+/*
 
-
-        @RequestMapping (value = "/upload", method =  RequestMethod.POST)
-        public @ResponseBody String handleFileUpload(@RequestParam("name") String name,
-                                                    @RequestParam("file") MultipartFile file,
-                                                    HttpServletRequest request
-        ){
-                try {
-                    byte[] bytes = file.getBytes();
-                    // Create the file on server
-                    String str2 = request.getSession().getServletContext().getRealPath("/sources")+"\\img\\";
-                    File serverFile = new File(str2 + name + ".jpg" );
-                    BufferedOutputStream stream = new BufferedOutputStream(
-                            new FileOutputStream(serverFile));
-                    stream.write(bytes);
-                    stream.close();
-                } catch (Exception e) {
-                    return "You failed to upload " + name + " => " + e.getMessage();
-                }
-            return null;
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String handleFileUpload(@RequestParam("name") String name,
+                            @RequestParam("file") MultipartFile file,
+                            HttpServletRequest request
+    ) {
+        try {
+            byte[] bytes = file.getBytes();
+            // Create the file on server
+            String str2 = request.getSession().getServletContext().getRealPath("/sources") + "\\img\\";
+            File serverFile = new File(str2 + name + ".jpg");
+            BufferedOutputStream stream = new BufferedOutputStream(
+                    new FileOutputStream(serverFile));
+            stream.write(bytes);
+            stream.close();
+        } catch (Exception e) {
+            return "You failed to upload " + name + " => " + e.getMessage();
         }
-
-        @RequestMapping (value = "/upload", method =  RequestMethod.GET)
-        public String getUpload(){
-            return "upload";
-        }
+        return null;
+    }
+*/
+    @RequestMapping(value = "/about", method = RequestMethod.GET)
+    public String getAbout() {
+        return "about";
+    }
 
     @RequestMapping(value = "/orderUser/{id}", method = RequestMethod.GET)
     public String showOrdersByUser(@PathVariable int id,
@@ -343,4 +444,40 @@ public class MainController {
         return "showOrderDetails";
 
     }
+
+    @RequestMapping(value = "/getUserData/{id}", method = RequestMethod.GET)
+    public String showDataUser(@PathVariable int id,
+                               ModelMap model
+    ) {
+        model.addAttribute("userData", userService.read(id));
+        return "userData";
+    }
+
+    @RequestMapping(value = "/user_saveData", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String saveUserData(
+            @RequestBody UserDTO dto
+    ) {
+        User user = mapper.map(dto, User.class);
+        user.setRole(roleService.read(3));
+        user.setPassword(userService.read(user.getId()).getPassword());
+        userService.update(user);
+
+     /*   User user = mapper.map(dto, User.class);
+        user.setDisable(false);
+        user.setRole(roleService.read(3));
+        userService.create(user);
+*/
+        return "Done";
+    }
+
+    @RequestMapping(value = "/news_get", method = RequestMethod.GET)
+    public String getNews(
+            ModelMap model
+    ) {
+        model.addAttribute("listNews", newsService.getAllNews());
+        return "editOrder";
+    }
+
 }

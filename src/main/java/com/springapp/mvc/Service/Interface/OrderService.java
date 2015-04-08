@@ -15,4 +15,5 @@ public interface OrderService extends GenericService<Orders> {
     public List<Orders> getOrdersByUser(User user);
     public List<Orders> getOrderByStatus(int status);
     public List<Orders> getOrderByDate(Date date);
+    public List<Orders> getOrdersByPeriodDate (Date date1, Date date2);
 }

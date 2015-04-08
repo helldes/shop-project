@@ -198,7 +198,7 @@
                             id="boxSum">${fnn:length(shoppingCart)}</label></a>
                 </li>
                 <li>
-                    <a href="/upload">About</a>
+                    <a href="/about">About</a>
                 </li>
                 <li>
                     <c:if test="${pageContext.request.userPrincipal.name != null}">

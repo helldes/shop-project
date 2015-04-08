@@ -24,6 +24,14 @@ public class OrderDetails implements Serializable {
     @Column(name = "QUANTITY")
     private int quantity;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getQuantity() {
         return quantity;
     }

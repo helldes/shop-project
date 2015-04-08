@@ -33,4 +33,9 @@ public class OrderServiceImpl extends GenericServiceImpl<Orders> implements Orde
     public List<Orders> getOrderByDate(Date date) {
         return orderDao.getOrderByDate(date);
     }
+
+    @Override
+    public List<Orders> getOrdersByPeriodDate(Date date1, Date date2) {
+        return orderDao.getOrdersByPeriodDate(date1, date2);
+    }
 }
