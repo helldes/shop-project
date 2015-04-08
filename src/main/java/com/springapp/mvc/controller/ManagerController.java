@@ -1,10 +1,12 @@
 package com.springapp.mvc.controller;
 
+import com.springapp.mvc.DTO.NewsDTO;
 import com.springapp.mvc.Entity.News;
 import com.springapp.mvc.Entity.OrderDetails;
 import com.springapp.mvc.Entity.Orders;
 import com.springapp.mvc.Entity.Product;
 import com.springapp.mvc.Service.Interface.*;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -36,6 +38,9 @@ public class ManagerController {
     @Autowired
     NewsService newsService;
 
+    @Autowired
+    MapperFacade mapper;
+
     @RequestMapping(value = "/orders_get", method = RequestMethod.GET)
     public String getOrders(ModelMap model) {
         model.addAttribute("ordersDone", orderService.getOrderByStatus(1));
@@ -56,15 +61,10 @@ public class ManagerController {
     }
 
     @RequestMapping(value = "/news_add", method = RequestMethod.POST)
-    public String addNews(
-            @RequestParam String title,
-            @RequestParam String description
+    public @ResponseBody String addNews(@RequestBody NewsDTO dto
     ) {
-        News news = new News();
-        news.setTitle(title);
-        news.setDescription(description);
-        newsService.addNews(news);
-        return null;
+        newsService.create(mapper.map(dto, News.class));
+        return "ok";
     }
 
     @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
@@ -240,6 +240,14 @@ public class ManagerController {
         model.addAttribute("ordersDetails", orderDetailsService.getAllOrderDetails());
         model.addAttribute("users", userService.getUsers());
         return "orders";
+
+    }
+
+    @RequestMapping(value = "/news_delete/{id}", method = RequestMethod.GET)
+    public String deleteNews(@PathVariable int id
+    ) {
+        newsService.delete(newsService.read(id));
+        return "editOrder";
 
     }
     /*

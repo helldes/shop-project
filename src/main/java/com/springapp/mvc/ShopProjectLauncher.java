@@ -48,6 +48,7 @@ public class ShopProjectLauncher {
         mapperFactory.classMap(Attribute.class, AttributeDTO.class).byDefault().register();
         mapperFactory.classMap(Category.class, CategoryDTO.class).field("parent.id", "parent").byDefault().register();
         mapperFactory.classMap(User.class, UserDTO.class).field("role.id", "role").byDefault().register();
+        mapperFactory.classMap(News.class, NewsDTO.class).byDefault().register();
         mapperFactory.classMap(Product.class, ProductDTO.class)
                 .field("brand.id", "brand")
                 .field("category.id", "category").byDefault().register();

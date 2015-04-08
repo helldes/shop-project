@@ -9,7 +9,6 @@ import java.util.List;
  * Created by helldes on 25.03.2015.
  */
 @Component
-public interface NewsService {
-    public void addNews(News news);
+public interface NewsService extends GenericService<News>{
     public List<News> getAllNews();
 }

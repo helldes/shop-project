@@ -477,7 +477,7 @@ public class MainController {
             ModelMap model
     ) {
         model.addAttribute("listNews", newsService.getAllNews());
-        return "editOrder";
+        return "news";
     }
 
 }
