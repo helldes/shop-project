@@ -61,10 +61,10 @@ public class ManagerController {
     }
 
     @RequestMapping(value = "/news_add", method = RequestMethod.POST)
-    public @ResponseBody String addNews(@RequestBody NewsDTO dto
+    public String addNews(@RequestBody NewsDTO dto
     ) {
         newsService.create(mapper.map(dto, News.class));
-        return "ok";
+        return "redirect:/login/main";
     }
 
     @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)

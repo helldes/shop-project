@@ -13,8 +13,15 @@
         return formData;
     };
 
+    function getProductEdit(idProduct){
+        $.get("${pageContext.request.contextPath}/admin/product/"+idNews, function (data) {
+            showNews('/news_get');
+        });
+    }
+
     function editProduct() {
         var msg = $('#editForm').serializeObject();
+        var idProduct = document.getElementById()
         $.ajax({
             type: 'POST',
             url: '${pageContext.request.contextPath}/admin/product_edit',
@@ -49,11 +56,7 @@
             }
         });
     });
-    function openModalEditAttribute(idProduct){
-        alert(idProduct);
-        $('#myModalEditAttribute').modal('toggle');
-        alert("STOP");
-    }
+
 
     function addAttribute() {
         var msg = $('#addForm').serialize();
@@ -94,6 +97,7 @@
         document.getElementById("priceProductModal").value = price;
         document.getElementById("brandProductModal").value = brand;
         document.getElementById("disableProductModal").value = disable;
+        document.getElementById("editCountProductModal").value = disable;
     }
 </script>
 <style>
@@ -193,6 +197,30 @@
                                        id="addFileProductModal"/>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">measure</label>
+
+                            <div class="col-xs-5 col-lg-6">
+                                <select name="addAttributeProductModal" style="color: gray" class="form-control"
+                                        id="addAttributeProductModal">
+                                    <c:forEach var="attribute" items="${attributes}">
+                                        <option value="${attribute.id}">${attribute.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">Count</label>
+
+                            <div class="col-xs-5  col-lg-6">
+                                <input type="number" min="0"  class="form-control" name="addCountProductModal"
+                                       id="addCountProductModal"/>
+                            </div>
+                        </div>
+
+
+
+
                     </div>
 
                     <div class="form-group">
@@ -307,8 +335,23 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-xs-5 col-xs-offset-9">
-                                <button  class="btn btn-default" onclick="openModalEditAttribute(document.getElementById('idProductModal').value)">edit Attribute</button>
+                            <label class="col-xs-3 control-label">Measure</label>
+
+                            <div class="col-xs-5 col-lg-6">
+                                <select name="editAttributeProductModal" style="color: gray" class="form-control"
+                                        id="editAttributeProductModal">
+                                    <c:forEach var="attribute" items="${attributes}">
+                                        <option value="${attribute.id}">${attribute.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">Count</label>
+
+                            <div class="col-xs-5  col-lg-6">
+                                <input type="number" min="0"  class="form-control" name="editCountProductModal"
+                                       id="editCountProductModal"/>
                             </div>
                         </div>
                     </div>
@@ -325,62 +368,6 @@
 </div>
 
 <!-- Modal -->
-
-
-<div class="modal" id="myModal2" data-backdrop="static">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Second Modal title</h4>
-            </div><div class="container"></div>
-            <div class="modal-body">
-                Content for the dialog / modal goes here.
-            </div>
-            <div class="modal-footer">
-                <a href="#" data-dismiss="modal" class="btn">Close</a>
-                <a href="#" class="btn btn-primary">Save changes</a>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="myModalEditAttribute" tabindex="-1" role="dialog" aria-labelledby="myModalLabel0" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel0">Attribute  Add/Edit</h4>
-            </div>
-            <form id="formEditAttribute" class="form-horizontal" action="javascript:void(null);" onsubmit="addAttribute()">
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="col-xs-3 control-label">Select Attribute</label>
-
-                    <div class="col-xs-3  col-lg-3">
-                        <select name="attributeProductModal" style="color: gray" class="form-control"
-                                id="attributeProductModal">
-                            <option value="0" selected>Select</option>
-                            <c:forEach var="attribute" items="${attributes}">
-                                <option value="${attribute.id}">${attribute.name}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <div class="col-xs-3  col-lg-3">
-                        <input type="text" class="form-control" name="attributeValueProductModal" value="0"
-                               id="attributeValueProductModal"/>
-                    </div>
-                    <input type="hidden" id="idProduct" name="idProduct">
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 
 <div class="page-header">
@@ -411,9 +398,9 @@
             <td>${product.price}</td>
             <td>${product.getBrand().getName()}</td>
             <td>${product.disable}</td>
+
             <td><a class="btn btn-default" data-toggle="modal" data-target="#editModal" data-backdrop="static"
-                   onclick="editRow('${product.id}','${product.code}', '${product.name}', '${product.getCategory().getId()}'
-                           , '${product.description}', '${product.price}', '${product.getBrand().getId()}','${product.disable}')">Edit</a>
+                   onclick="getProductEdit(${product.id})">Edit</a>
 
                 <button id="${product.id}" onclick="deleteProduct(${product.id})" class="btn btn-default">Delete
                 </button>

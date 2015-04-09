@@ -27,12 +27,11 @@
   function addNews() {
     var msg = $('#FormAddNews').serializeObject();
     $.ajax({
+      type: 'POST',
       url: '${pageContext.request.contextPath}/orders/news_add',
-      type:"POST",
       contentType: 'application/json',
       data: JSON.stringify(msg),
-      success: function (data) {
-        alert(data);
+      success: function () {
         showNews('/news_get');
       },
       error: function () {
@@ -40,16 +39,17 @@
       }
     });
   }
+
 </script>
 <div class="page-header">
   <h3 class="" contenteditable="false">News</h3>
 </div>
 <p class=""></p>
-<form id="FormAddNews">
+<form id="FormAddNews" action="javascript:void(null);" onsubmit="addNews()">
 <div>
   <label>Title</label><input type="text" id="title" name="title"/>
   <label>Description</label><input type="text" id="description" name="description"/>
-  <button onclick="addNews()">Save</button>
+  <input type="submit" value="Add"/>
 </div>
 </form>
 

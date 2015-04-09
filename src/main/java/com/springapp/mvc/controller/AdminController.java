@@ -7,10 +7,7 @@ import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -133,6 +130,8 @@ public class AdminController {
             @RequestParam Double addPriceProductModal,
             @RequestParam int addBrandProductModal,
             @RequestParam MultipartFile addFileProductModal,
+            @RequestParam int addAttributeProductModal,
+            @RequestParam int addCountProductModal,
             HttpServletRequest request
     ) {
 
@@ -157,7 +156,23 @@ public class AdminController {
             return "You failed to upload " + addCodeProductModal + " => " + e.getMessage();
         }
         productService.create(product);
+        ProductAttribute productAttribute = new ProductAttribute();
+        productAttribute.setAttribute(attributeService.read(addAttributeProductModal));
+        productAttribute.setValue(addCountProductModal);
+        productAttribute.setProduct(product);
+        productAttributeService.create(productAttribute);
         return "redirect:/login/main";
+    }
+
+    @RequestMapping(value = "/product_details/{id}", method = RequestMethod.GET)
+    public String ProductDetails(@PathVariable int id,
+                                 ModelMap model) {
+        model.addAttribute("attributes", attributeService.getAttributes());
+        model.addAttribute("brands", brandService.getBrands());
+        model.addAttribute("categorys", categoryService.getCategories());
+        model.addAttribute("products", productService.getProducts());
+        model.addAttribute("productAttribute",productAttributeService.getProductAttributeByProduct(productService.read(id)));
+        return "product";
     }
 
     @RequestMapping(value = "/product_get", method = RequestMethod.GET)
@@ -166,7 +181,7 @@ public class AdminController {
         model.addAttribute("brands", brandService.getBrands());
         model.addAttribute("categorys", categoryService.getCategories());
         model.addAttribute("products", productService.getProducts());
-     //   model.addAttribute("productAttribute",productAttributeService.getProductAttribute());
+    //    model.addAttribute("productAttribute",productAttributeService.getAll());
         return "product";
     }
 
