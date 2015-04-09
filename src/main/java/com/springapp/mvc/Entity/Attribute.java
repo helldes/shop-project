@@ -24,9 +24,6 @@ public class Attribute implements Serializable {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @ManyToMany(mappedBy="attributes")
-    private List<Category> categories;
-
     @OneToMany(mappedBy = "pk.attribute", fetch = FetchType.LAZY)
     private List<ProductAttribute> productAttributes;
 
@@ -60,14 +57,6 @@ public class Attribute implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
     }
 
     public List<ProductAttribute> getProductAttributes() {

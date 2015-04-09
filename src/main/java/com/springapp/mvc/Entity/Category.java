@@ -15,14 +15,8 @@ public class Category implements Serializable {
     @Column(name = "NAME")
     private String name;
 
-    @Column(name = "PARENT")
+    @Column(name = "PARENT", columnDefinition = "LONGBLOB")
     private Category parent;
-
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name="CATEGORY_ATTRIBUTE",
-            joinColumns={@JoinColumn(name="CATEGORY_ID")},
-            inverseJoinColumns={@JoinColumn(name="ATTRIBUTE_ID")})
-    private List<Attribute> attributes;
 
     @OneToMany(mappedBy = "category")
     private List<Product> products;
@@ -33,14 +27,6 @@ public class Category implements Serializable {
 
     public void setParent(Category parent) {
         this.parent = parent;
-    }
-
-    public List<Attribute> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<Attribute> attributes) {
-        this.attributes = attributes;
     }
 
     public int getId() {

@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.List;
 
 /**
  * Created by helldes on 27.02.2015.
@@ -54,12 +53,33 @@ public class AdminController {
     }
 
 /////////////////  CATEGORY
-
+/*
     @RequestMapping(value = "/category_add", method = RequestMethod.POST)
     public String addCategory(
             @RequestBody CategoryDTO dto
     ) {
+
+        Category category = mapper.map(dto, Category.class);
+        if (dto.getParent() == 0){
+            dto.setParent();
+        }
         categoryService.create(mapper.map(dto, Category.class));
+        return "redirect:/login/main";
+    }
+*/
+
+    @RequestMapping(value = "/category_add", method = RequestMethod.POST)
+    public String addCategory(
+            @RequestParam String name,
+            @RequestParam int parent
+    ) {
+        Category category = new Category();
+        category.setName(name);
+        if (parent != 0) {
+            Category parentCategory = categoryService.read(parent);
+            category.setParent(parentCategory);
+        }
+        categoryService.create(category);
         return "redirect:/login/main";
     }
 
@@ -165,14 +185,16 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/product_details/{id}", method = RequestMethod.GET)
-    public String ProductDetails(@PathVariable int id,
+    public @ResponseBody int ProductDetails(@PathVariable int id,
                                  ModelMap model) {
         model.addAttribute("attributes", attributeService.getAttributes());
         model.addAttribute("brands", brandService.getBrands());
         model.addAttribute("categorys", categoryService.getCategories());
         model.addAttribute("products", productService.getProducts());
         model.addAttribute("productAttribute",productAttributeService.getProductAttributeByProduct(productService.read(id)));
-        return "product";
+        ProductAttribute pa = productAttributeService.getProductAttributeByProduct(productService.read(id));
+
+        return pa.getValue();
     }
 
     @RequestMapping(value = "/product_get", method = RequestMethod.GET)
@@ -184,7 +206,7 @@ public class AdminController {
     //    model.addAttribute("productAttribute",productAttributeService.getAll());
         return "product";
     }
-
+/*
     @RequestMapping(value = "/product_editAttribute", method = RequestMethod.POST)
     public String addAttributeInProduct(
             @RequestParam int idProduct,
@@ -194,7 +216,7 @@ public class AdminController {
         Product product = productService.read(idProduct);
         if (attributeProductModal != 0) {
             Attribute attribute = attributeService.read(attributeProductModal);
-            List<ProductAttribute> listProductAttribute = productAttributeService.getProductAttributeByProduct(product);
+            ProductAttribute productAttribute = productAttributeService.getProductAttributeByProduct(product);
             for (ProductAttribute productAttribute : listProductAttribute){
                 if(productAttribute.getAttribute().equals(attribute)){
                     productAttribute.setValue(attributeValueProductModal);
@@ -210,7 +232,7 @@ public class AdminController {
         }
         return "redirect:/login/main";
     }
-
+*/
     @RequestMapping(value = "/product_delete", method = RequestMethod.POST)
     public String deleteProduct(
             @RequestParam int idProduct,
@@ -224,7 +246,11 @@ public class AdminController {
     public String editProduct(
             @RequestBody ProductDTO dto
             ){
+        ProductAttribute productAttribute =
+                productAttributeService.getProductAttributeByProduct(productService.read(dto.getId()));
+        productAttribute.setValue(dto.getCount());
         productService.update(mapper.map(dto, Product.class));
+        productAttributeService.update(productAttribute);
         return "redirect:/login/main";
     }
 

@@ -21,12 +21,11 @@
   };
 
   function newCategory() {
-    var msg = $('#form_category').serializeObject();
+    var msg = $('#form_category').serialize();
     $.ajax({
       type: 'POST',
       url: '${pageContext.request.contextPath}/admin/category_add',
-      contentType: 'application/json',
-      data: JSON.stringify(msg),
+      data: msg,
       success: function () {
         show('/admin/category_get');
       },
@@ -35,6 +34,7 @@
       }
     });
   }
+
   function editCategory() {
     var msg = $('#editForm').serializeObject();
     $.ajax({
@@ -113,7 +113,7 @@
                         id="parentCategoryModal">
                   <option style="color: gray" value="0" selected="0">Select Group</option>
                   <c:forEach var="category" items="${categorys}">
-                    <c:if test="${category.getParent().getId() == null}">
+                    <c:if test="${category.getParent() == null}">
                       <option value=${category.id}>${category.name} </option>
                     </c:if>
                   </c:forEach>
@@ -141,7 +141,7 @@
     <select name="parent" style="color: gray" class="form-control" id="parentCategory">
       <option style="color: gray" value="0" selected="0">Select Group</option>
       <c:forEach var="category" items="${categorys}">
-        <c:if test="${category.getParent().getId() == null}">
+        <c:if test="${category.getParent() == null}">
           <option value=${category.id}>${category.name} </option>
         </c:if>
       </c:forEach>

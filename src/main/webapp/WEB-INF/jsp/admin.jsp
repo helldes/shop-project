@@ -10,7 +10,7 @@
 <%@page session="true"%>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf8">
     <title>Admins page</title>
     <script src="${pageContext.request.contextPath}/sources/js/bootstrap-modal.js"></script>
     <script src="${pageContext.request.contextPath}/sources/js/jquery-2.1.3.min.js"></script>

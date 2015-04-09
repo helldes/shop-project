@@ -9,8 +9,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * Created by helldes on 24.03.2015.
  */
@@ -21,8 +19,9 @@ public class ProductAttributeDaoImpl extends GenericDaoImpl<ProductAttribute>imp
     SessionFactory sessionFactory;
 
     @Override
-    public List<ProductAttribute> getProductAttributeByProduct(Product product) {
-        return sessionFactory.getCurrentSession().createCriteria(ProductAttribute.class).add(Restrictions.eq("pk.product", product)).list();
+    public ProductAttribute getProductAttributeByProduct(Product product) {
+        return (ProductAttribute)sessionFactory.getCurrentSession().createCriteria(ProductAttribute.class)
+                .add(Restrictions.eq("pk.product", product)).uniqueResult();
     }
 
     @Override

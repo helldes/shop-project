@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <script>
     jQuery.fn.serializeObject = function () {
         var formData = {};
@@ -51,7 +51,6 @@
         document.getElementById("roleUserModal").value = role;
     }
 </script>
-
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">

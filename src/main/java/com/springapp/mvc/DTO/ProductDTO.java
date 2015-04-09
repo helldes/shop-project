@@ -12,6 +12,24 @@ public class ProductDTO {
     private Double price;
     private String code;
     private Boolean disable;
+    private int attribute;
+    private int count;
+
+    public int getAttribute() {
+        return attribute;
+    }
+
+    public void setAttribute(int attribute) {
+        this.attribute = attribute;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public int getId() {
         return id;

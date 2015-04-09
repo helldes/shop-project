@@ -20,8 +20,8 @@ public class ProductAttributeServiceImpl extends GenericServiceImpl<ProductAttri
     ProductAttributeDao productAttributeDao;
 
     @Override
-    public List<ProductAttribute> getProductAttributeByProduct(Product product) {
-        return null;
+    public ProductAttribute getProductAttributeByProduct(Product product) {
+        return productAttributeDao.getProductAttributeByProduct(product);
     }
 
     @Override

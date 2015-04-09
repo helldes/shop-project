@@ -80,6 +80,9 @@ public class MainController {
         if (categoryService.read(id_path).getParent() == null) {
             Category parentCategory = categoryService.read(id_path);
             List<Category> list = categoryService.getChildren(parentCategory);
+
+           List<Category> list1 = categoryService.getChildren(categoryService.read(1));
+
             List<Product> products = new LinkedList<Product>();
             for (Category category : list) {
                 products.addAll(productService.getProductsByCategory(category));

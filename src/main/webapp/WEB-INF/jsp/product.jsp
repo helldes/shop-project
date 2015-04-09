@@ -1,6 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<script src="${pageContext.request.contextPath}/sources/js/bootstrap-modal.js"></script>
 <script src="${pageContext.request.contextPath}/sources/js/jquery-2.1.3.min.js"></script>
 <script>
     jQuery.fn.serializeObject = function () {
@@ -13,15 +12,10 @@
         return formData;
     };
 
-    function getProductEdit(idProduct){
-        $.get("${pageContext.request.contextPath}/admin/product/"+idNews, function (data) {
-            showNews('/news_get');
-        });
-    }
 
     function editProduct() {
         var msg = $('#editForm').serializeObject();
-        var idProduct = document.getElementById()
+  //      var idProduct = document.getElementById();
         $.ajax({
             type: 'POST',
             url: '${pageContext.request.contextPath}/admin/product_edit',
@@ -57,23 +51,6 @@
         });
     });
 
-
-    function addAttribute() {
-        var msg = $('#addForm').serialize();
-        alert(msg);
-        $.ajax({
-            type: 'POST',
-            url: '${pageContext.request.contextPath}/admin/product_add',
-            data: msg,
-            success: function () {
-                show('/admin/product_editAttribute');
-            },
-            error: function () {
-                alert('Error');
-            }
-        });
-    }
-
     function deleteProduct(idProduct) {
         $.ajax({
             type: 'POST',
@@ -89,6 +66,11 @@
 
     }
     function editRow(id, code, name, category, description, price, brand, disable) {
+        $.get("${pageContext.request.contextPath}/admin/product_details/"+id, function (data) {
+            document.getElementById("editCountProductModal").value = data;
+            document.getElementById("editProductAttribute").value ='' ;
+
+        });
         document.getElementById("idProductModal").value = id;
         document.getElementById("codeProductModal").value = code;
         document.getElementById("nameProductModal").value = name;
@@ -97,7 +79,7 @@
         document.getElementById("priceProductModal").value = price;
         document.getElementById("brandProductModal").value = brand;
         document.getElementById("disableProductModal").value = disable;
-        document.getElementById("editCountProductModal").value = disable;
+
     }
 </script>
 <style>
@@ -218,9 +200,6 @@
                             </div>
                         </div>
 
-
-
-
                     </div>
 
                     <div class="form-group">
@@ -338,19 +317,14 @@
                             <label class="col-xs-3 control-label">Measure</label>
 
                             <div class="col-xs-5 col-lg-6">
-                                <select name="editAttributeProductModal" style="color: gray" class="form-control"
-                                        id="editAttributeProductModal">
-                                    <c:forEach var="attribute" items="${attributes}">
-                                        <option value="${attribute.id}">${attribute.name}</option>
-                                    </c:forEach>
-                                </select>
+                                <input type="text" name="attribute" id="editProductAttribute" class="form-control" value="${productAttribute.name}" readonly/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-3 control-label">Count</label>
 
                             <div class="col-xs-5  col-lg-6">
-                                <input type="number" min="0"  class="form-control" name="editCountProductModal"
+                                <input type="number" min="0"  class="form-control" name="count" value="${productAttribute.value}"
                                        id="editCountProductModal"/>
                             </div>
                         </div>
@@ -400,7 +374,8 @@
             <td>${product.disable}</td>
 
             <td><a class="btn btn-default" data-toggle="modal" data-target="#editModal" data-backdrop="static"
-                   onclick="getProductEdit(${product.id})">Edit</a>
+                   onclick="editRow('${product.id}','${product.code}', '${product.name}', '${product.getCategory().getId()}'
+                           , '${product.description}', '${product.price}', '${product.getBrand().getId()}','${product.disable}')">Edit</a>
 
                 <button id="${product.id}" onclick="deleteProduct(${product.id})" class="btn btn-default">Delete
                 </button>

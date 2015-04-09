@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Component
 public interface ProductAttributeService extends GenericService<ProductAttribute> {
-    public List<ProductAttribute> getProductAttributeByProduct(Product product);
+    public ProductAttribute getProductAttributeByProduct(Product product);
     public ProductAttribute getProductAttributeByProductAttribute(Attribute attribute, Product product);
     public List<ProductAttribute> getAll();
 }
