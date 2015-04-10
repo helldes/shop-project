@@ -7,11 +7,11 @@
  * Spring-boot
  * Spring-security
  * Hibernate
-* DB MySQL
-* JavaScript/JQuery/AJAX
-* JSP/JSTL
-* Bootstrap
-* Maven
+ * DB MySQL
+ * JavaScript/JQuery/AJAX
+ * JSP/JSTL
+ * Bootstrap
+ * Maven
 
 
 #### Структура приложения:
