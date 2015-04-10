@@ -128,7 +128,6 @@
                             <div class="col-xs-5 col-lg-6">
                                 <select name="addCategoryProductModal" style="color: gray" class="form-control"
                                         id="addCategoryProductModal">
-                                    <option value="Select" selected>Select</option>
                                     <c:forEach var="category" items="${categorys}">
                                         <c:if test="${category.parent != null}">
                                             <option value="${category.id}">${category.name}</option>
@@ -162,7 +161,6 @@
                             <div class="col-xs-5 col-lg-6">
                                 <select name="addBrandProductModal" style="color: gray" class="form-control"
                                         id="addBrandProductModal">
-                                    <option value="Select" selected>Select</option>
                                     <c:forEach var="brand" items="${brands}">
                                         <option value="${brand.id}">${brand.name}</option>
                                     </c:forEach>
@@ -193,7 +191,7 @@
                             <label class="col-xs-3 control-label">Count</label>
 
                             <div class="col-xs-5  col-lg-6">
-                                <input type="number" min="0" class="form-control" name="addCountProductModal"
+                                <input type="number" min="0" class="form-control" name="addCountProductModal" value="1"
                                        id="addCountProductModal"/>
                             </div>
                         </div>

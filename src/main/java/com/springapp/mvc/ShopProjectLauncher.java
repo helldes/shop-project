@@ -33,7 +33,9 @@ public class ShopProjectLauncher {
     }
     @Bean
     public MultipartResolver multipartResolver() {
-        return new CommonsMultipartResolver();
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setDefaultEncoding("utf-8");
+        return multipartResolver;
     }
 
     @Bean
