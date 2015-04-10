@@ -10,9 +10,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <script src="${pageContext.request.contextPath}/sources/js/jquery.maskedinput.min.js"></script>
 <script>
-    jQuery(function ($) {
-        $("#noOrder").mask("999999");
-    });
 
     $(document).ready(function () {
         var now = new Date();
@@ -187,7 +184,7 @@
             </select>
         </td>
         <td align="left" width="350px">
-            <input type="text" hidden="true" id="noOrder" name="noOrder" data-mask-reverse="true" data-mask="999999">
+            <input type="number" hidden="true" id="noOrder" name="noOrder">
             <input type="date" hidden="true" id="date1" name="date1">
             <input type="date" hidden="true" id="date2" name="date2">
         </td>
@@ -359,7 +356,6 @@
                     <div class="form-group">
 
                         <div class="col-xs-5 col-xs-offset-8">
-                            <a class="btn btn-default" href="javascript:printDiv('editOrder')">Print</a>
                             <button onclick="SaveEditOrder()" class="btn btn-default">Save</button>
                         </div>
                     </div>
@@ -369,5 +365,4 @@
     </div>
 </div>
 
-<iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
 <!-- -->

@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by helldes on 27.02.2015.
@@ -53,20 +55,7 @@ public class AdminController {
     }
 
 /////////////////  CATEGORY
-/*
-    @RequestMapping(value = "/category_add", method = RequestMethod.POST)
-    public String addCategory(
-            @RequestBody CategoryDTO dto
-    ) {
 
-        Category category = mapper.map(dto, Category.class);
-        if (dto.getParent() == 0){
-            dto.setParent();
-        }
-        categoryService.create(mapper.map(dto, Category.class));
-        return "redirect:/login/main";
-    }
-*/
 
     @RequestMapping(value = "/category_add", method = RequestMethod.POST)
     public String addCategory(
@@ -166,8 +155,8 @@ public class AdminController {
         try {
             byte[] bytes = addFileProductModal.getBytes();
             // Create the file on server
-            String path = request.getSession().getServletContext().getRealPath("/sources")+"\\img\\";
-            File serverFile = new File(path + addCodeProductModal + ".jpg" );
+            String path = request.getSession().getServletContext().getRealPath("/sources") + "\\img\\";
+            File serverFile = new File(path + addCodeProductModal + ".jpg");
             BufferedOutputStream stream = new BufferedOutputStream(
                     new FileOutputStream(serverFile));
             stream.write(bytes);
@@ -185,16 +174,15 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/product_details/{id}", method = RequestMethod.GET)
-    public @ResponseBody int ProductDetails(@PathVariable int id,
-                                 ModelMap model) {
-        model.addAttribute("attributes", attributeService.getAttributes());
-        model.addAttribute("brands", brandService.getBrands());
-        model.addAttribute("categorys", categoryService.getCategories());
-        model.addAttribute("products", productService.getProducts());
-        model.addAttribute("productAttribute",productAttributeService.getProductAttributeByProduct(productService.read(id)));
+    public
+    @ResponseBody
+    List<String> ProductDetails(@PathVariable int id,
+                                ModelMap model) {
         ProductAttribute pa = productAttributeService.getProductAttributeByProduct(productService.read(id));
-
-        return pa.getValue();
+        List<String> list = new LinkedList<>();
+        list.add(Integer.toString(pa.getValue()));
+        list.add(pa.getAttribute().getName());
+        return list;
     }
 
     @RequestMapping(value = "/product_get", method = RequestMethod.GET)
@@ -203,36 +191,9 @@ public class AdminController {
         model.addAttribute("brands", brandService.getBrands());
         model.addAttribute("categorys", categoryService.getCategories());
         model.addAttribute("products", productService.getProducts());
-    //    model.addAttribute("productAttribute",productAttributeService.getAll());
         return "product";
     }
-/*
-    @RequestMapping(value = "/product_editAttribute", method = RequestMethod.POST)
-    public String addAttributeInProduct(
-            @RequestParam int idProduct,
-            @RequestParam int attributeProductModal,
-            @RequestParam int attributeValueProductModal
-    ) {
-        Product product = productService.read(idProduct);
-        if (attributeProductModal != 0) {
-            Attribute attribute = attributeService.read(attributeProductModal);
-            ProductAttribute productAttribute = productAttributeService.getProductAttributeByProduct(product);
-            for (ProductAttribute productAttribute : listProductAttribute){
-                if(productAttribute.getAttribute().equals(attribute)){
-                    productAttribute.setValue(attributeValueProductModal);
-                    productAttributeService.update(productAttribute);
-                    return "redirect:/login/main";
-                }
-            }
-            ProductAttribute productAttribute = new ProductAttribute();
-            productAttribute.setProduct(product);
-            productAttribute.setAttribute(attributeService.read(attributeProductModal));
-            productAttribute.setValue(attributeValueProductModal);
-            productAttributeService.create(productAttribute);
-        }
-        return "redirect:/login/main";
-    }
-*/
+
     @RequestMapping(value = "/product_delete", method = RequestMethod.POST)
     public String deleteProduct(
             @RequestParam int idProduct,
@@ -245,7 +206,7 @@ public class AdminController {
     @RequestMapping(value = "/product_edit", method = RequestMethod.POST)
     public String editProduct(
             @RequestBody ProductDTO dto
-            ){
+    ) {
         ProductAttribute productAttribute =
                 productAttributeService.getProductAttributeByProduct(productService.read(dto.getId()));
         productAttribute.setValue(dto.getCount());
@@ -257,7 +218,7 @@ public class AdminController {
 /////////////////   BRAND
 
     @RequestMapping(value = "/brand_add", method = RequestMethod.POST)
-    public  String addBrand(
+    public String addBrand(
             @RequestBody BrandDTO dto
     ) {
         brandService.create(mapper.map(dto, Brand.class));
@@ -288,13 +249,13 @@ public class AdminController {
 
 ///////////////// CATEGORY
 
-@RequestMapping(value = "/attribute_add", method = RequestMethod.POST)
-public String addAttribute(
-        @RequestBody AttributeDTO dto
-) {
-    attributeService.create(mapper.map(dto, Attribute.class));
-    return "redirect:/login/main";
-}
+    @RequestMapping(value = "/attribute_add", method = RequestMethod.POST)
+    public String addAttribute(
+            @RequestBody AttributeDTO dto
+    ) {
+        attributeService.create(mapper.map(dto, Attribute.class));
+        return "redirect:/login/main";
+    }
 
     @RequestMapping(value = "/attribute_get", method = RequestMethod.GET)
     public String attribute(ModelMap model) {

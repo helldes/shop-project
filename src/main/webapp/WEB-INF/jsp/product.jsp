@@ -67,8 +67,8 @@
     }
     function editRow(id, code, name, category, description, price, brand, disable) {
         $.get("${pageContext.request.contextPath}/admin/product_details/"+id, function (data) {
-            document.getElementById("editCountProductModal").value = data;
-            document.getElementById("editProductAttribute").value ='' ;
+            document.getElementById("editCountProductModal").value = data[0];
+            document.getElementById("editProductAttribute").value = data[1];
 
         });
         document.getElementById("idProductModal").value = id;
@@ -101,7 +101,7 @@
             </div>
             <div class="modal-body">
                 <!-- The form is placed inside the body of modal -->
-                <form id="addForm" class="form-horizontal" action="javascript:void(null);"  enctype="multipart/form-data">
+                <form id="addForm" class="form-horizontal" action="javascript:void(null);"  enctype="multipart/form-data" >
                     <div class="form-group">
 
                         <div class="form-group">
@@ -317,14 +317,14 @@
                             <label class="col-xs-3 control-label">Measure</label>
 
                             <div class="col-xs-5 col-lg-6">
-                                <input type="text" name="attribute" id="editProductAttribute" class="form-control" value="${productAttribute.name}" readonly/>
+                                <input type="text" name="attribute" id="editProductAttribute" class="form-control" disabled="disabled"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-3 control-label">Count</label>
 
                             <div class="col-xs-5  col-lg-6">
-                                <input type="number" min="0"  class="form-control" name="count" value="${productAttribute.value}"
+                                <input type="number" min="0"  class="form-control" name="count"
                                        id="editCountProductModal"/>
                             </div>
                         </div>
@@ -372,7 +372,6 @@
             <td>${product.price}</td>
             <td>${product.getBrand().getName()}</td>
             <td>${product.disable}</td>
-
             <td><a class="btn btn-default" data-toggle="modal" data-target="#editModal" data-backdrop="static"
                    onclick="editRow('${product.id}','${product.code}', '${product.name}', '${product.getCategory().getId()}'
                            , '${product.description}', '${product.price}', '${product.getBrand().getId()}','${product.disable}')">Edit</a>

@@ -10,7 +10,6 @@
       alert("So math count!");
       coun=99;
       document.getElementById('count'+id).value = coun;
-      //document.getElementById('lb' + id).textContent = (coun * price).toFixed(2);
     }else {
       $.ajax({
         type: 'POST',
@@ -23,17 +22,9 @@
           alert('Error');
         }
       });
-      //  document.getElementById("TPriceModal").value = "";
-      //  document.getElementById("TPriceModal").value = newTotalPrice;
-      //  document.getElementById('lb' + id).textContent = (coun * price).toFixed(2);
     }
   }
 
-  function printDiv(divId) {
-    window.frames["print_frame"].document.body.innerHTML= document.getElementById(divId).innerHTML;
-    window.frames["print_frame"].window.focus();
-    window.frames["print_frame"].window.print();
-  }
 
   function deleteProductFromOrder(idProduct) {
     var idOrders = document.getElementById("idOrderModal").value;

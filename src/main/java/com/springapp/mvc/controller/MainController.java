@@ -80,9 +80,7 @@ public class MainController {
         if (categoryService.read(id_path).getParent() == null) {
             Category parentCategory = categoryService.read(id_path);
             List<Category> list = categoryService.getChildren(parentCategory);
-
-           List<Category> list1 = categoryService.getChildren(categoryService.read(1));
-
+            List<Category> list1 = categoryService.getChildren(categoryService.read(1));
             List<Product> products = new LinkedList<Product>();
             for (Category category : list) {
                 products.addAll(productService.getProductsByCategory(category));
@@ -102,7 +100,6 @@ public class MainController {
             }
         }
     }
-
 
     @RequestMapping(value = "/sortProducts/{idSelect}/{idCategory}", method = RequestMethod.GET)
     public String productsSortBy(
@@ -319,13 +316,9 @@ public class MainController {
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-
-
         HttpSession session = request.getSession();
-
         Set<Product> set = (Set<Product>) session.getAttribute("shoppingCart");
         String letter = "";
-
         Double totalPrice = 0.0;
         for (Product product_value : set) {
             String str = request.getParameter(("count" + product_value.getId()));
@@ -337,10 +330,6 @@ public class MainController {
         letter += "  ||| Phone  " + phoneNumber;
         session.removeAttribute("shoppingCart");
 
-/* MAIL SENDER
-//        mailSender sslSender = new mailSender("rublebubleandr@gmail.com", "");
-//        sslSender.send("From GeekHub Shop", letter, "rublebubleandr@gmail.com", "task5gh@yandex.ru");
-*/
         if (phoneNumber.equals("0")) {
             User user = userService.getUser(request.getUserPrincipal().getName());
             Orders order = new Orders();
@@ -401,30 +390,7 @@ public class MainController {
         }
         return "main";
     }
-/*
 
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    String handleFileUpload(@RequestParam("name") String name,
-                            @RequestParam("file") MultipartFile file,
-                            HttpServletRequest request
-    ) {
-        try {
-            byte[] bytes = file.getBytes();
-            // Create the file on server
-            String str2 = request.getSession().getServletContext().getRealPath("/sources") + "\\img\\";
-            File serverFile = new File(str2 + name + ".jpg");
-            BufferedOutputStream stream = new BufferedOutputStream(
-                    new FileOutputStream(serverFile));
-            stream.write(bytes);
-            stream.close();
-        } catch (Exception e) {
-            return "You failed to upload " + name + " => " + e.getMessage();
-        }
-        return null;
-    }
-*/
     @RequestMapping(value = "/about", method = RequestMethod.GET)
     public String getAbout() {
         return "about";
@@ -466,12 +432,6 @@ public class MainController {
         user.setRole(roleService.read(3));
         user.setPassword(userService.read(user.getId()).getPassword());
         userService.update(user);
-
-     /*   User user = mapper.map(dto, User.class);
-        user.setDisable(false);
-        user.setRole(roleService.read(3));
-        userService.create(user);
-*/
         return "Done";
     }
 

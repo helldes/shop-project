@@ -1,10 +1,7 @@
 package com.springapp.mvc.controller;
 
 import com.springapp.mvc.DTO.NewsDTO;
-import com.springapp.mvc.Entity.News;
-import com.springapp.mvc.Entity.OrderDetails;
-import com.springapp.mvc.Entity.Orders;
-import com.springapp.mvc.Entity.Product;
+import com.springapp.mvc.Entity.*;
 import com.springapp.mvc.Service.Interface.*;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +34,9 @@ public class ManagerController {
 
     @Autowired
     NewsService newsService;
+
+    @Autowired
+    ProductAttributeService productAttributeService;
 
     @Autowired
     MapperFacade mapper;
@@ -234,6 +234,16 @@ public class ManagerController {
     ) {
         Orders orders = orderService.read(id);
         orders.setStatus(1);
+        //orders.getClass()
+        List<OrderDetails> list = new LinkedList<>();
+        list.addAll(orderDetailsService.getOrderDetailsByOrder(orderService.read(id)));
+        for (OrderDetails or:list){
+            int oldValueQuantity = productAttributeService.getProductAttributeByProduct(or.getProduct()).getValue();
+            ProductAttribute productAttribute = productAttributeService.getProductAttributeByProduct(or.getProduct());
+            productAttribute.setValue(oldValueQuantity - or.getQuantity());
+            productAttributeService.update(productAttribute);
+        }
+
         orderService.update(orders);
         model.addAttribute("ordersDone", orderService.getOrderByStatus(1));
         model.addAttribute("ordersInWork", orderService.getOrderByStatus(0));
@@ -250,34 +260,4 @@ public class ManagerController {
         return "editOrder";
 
     }
-    /*
-    @RequestMapping(value = "/statistic_ManyBuyProduct/", method = RequestMethod.GET)
-    public String getStatisticByMoneyBuyProduct(
-            ModelMap modal
-    ) {
-        Map map = new HashMap();
-        List<Product> listProduct = productService.getProducts();
-        for (Product product : listProduct) {
-            List<OrderDetails> listOrderDetails = orderDetailsService.getOrderDetailsByProduct(product);
-            int count = 0;
-            for (OrderDetails orderDetails : listOrderDetails) {
-                count += orderDetails.getQuantity();
-            }
-            map.put(product, count);
-        }
-        Map mapResult = new HashMap();
-
-        List<Map> mapList = new ArrayList(map.entrySet());
-        Collections.sort(mapList, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                Map.Entry e1 = (Map.Entry) o1;
-                Map.Entry e2 = (Map.Entry) o2;
-                Comparable c1 = (Comparable) e1.getValue();
-                Comparable c2 = (Comparable) e2.getValue();
-                return c2.compareTo(c1);
-            }
-        });
-        modal.addAttribute("mapStaticticByCount",mapList);
-        return "statisticByCount";
-    }*/
 }
