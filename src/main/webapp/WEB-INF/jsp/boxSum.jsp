@@ -10,13 +10,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script>
     function sumPrice(id, price) {
-        var coun = document.getElementById('count'+id).value;
-        if (coun > 99){
+        var coun = document.getElementById('count' + id).value;
+        if (coun > 99) {
             alert("So math count!");
-            coun=99;
-            document.getElementById('count'+id).value = coun;
+            coun = 99;
+            document.getElementById('count' + id).value = coun;
             document.getElementById('lb' + id).textContent = (coun * price).toFixed(2);
-        }else {
+        } else {
             document.getElementById('lb' + id).textContent = (coun * price).toFixed(2);
         }
     }
@@ -40,7 +40,8 @@
             <td>${product.description}</td>
             <td><label id="lb${product.id}">${product.price}</label></td>
             <td>${product.getBrand().getName()}</td>
-            <td><input id="count${product.id}" name="count${product.id}" type="number" style="width: 3em;" value="1" min="1" max="99"
+            <td><input id="count${product.id}" name="count${product.id}" type="number" style="width: 3em;" value="1"
+                       min="1" max="99"
                        onchange="sumPrice('${product.id}',${product.price})"></td>
             <td>
                 <button id="${product.id}" onclick="deleteShopCardProduct(${product.id})"

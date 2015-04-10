@@ -98,9 +98,9 @@ public class ManagerController {
     }
 
     @RequestMapping(value = "/statistic_CountBuyProduct", method = RequestMethod.GET)
-    public String getStatisticByCountBuyProduct(ModelMap modal  ) {
+    public String getStatisticByCountBuyProduct(ModelMap modal) {
         Map map = new HashMap();
-            List<Product> listProduct = productService.getProducts();
+        List<Product> listProduct = productService.getProducts();
         for (Product product : listProduct) {
             List<OrderDetails> listOrderDetails = orderDetailsService.getOrderDetailsByProduct(product);
             int count = 0;
@@ -119,7 +119,7 @@ public class ManagerController {
                 return c2.compareTo(c1);
             }
         });
-        modal.addAttribute("mapStaticticByCount",mapList);
+        modal.addAttribute("mapStaticticByCount", mapList);
         return "statisticByCount";
     }
 
@@ -134,7 +134,7 @@ public class ManagerController {
         orders.setCustomAddress(address);
 
         List<OrderDetails> list = orderDetailsService.getOrderDetailsByOrder(orders);
-        if (list.size() == 0 ) {
+        if (list.size() == 0) {
             orders.setTotalPrice(0.0);
         } else {
             double newSum = 0.0;
@@ -189,25 +189,25 @@ public class ManagerController {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String showSearchOrder( @RequestParam int sel,
-                                   @RequestParam int idOrder,
-                                   @RequestParam String date1,
-                                   @RequestParam String date2,
-                                   ModelMap model
+    public String showSearchOrder(@RequestParam int sel,
+                                  @RequestParam int idOrder,
+                                  @RequestParam String date1,
+                                  @RequestParam String date2,
+                                  ModelMap model
     ) throws ParseException {
         // search by number Order
         model.addAttribute("ordersDone", new LinkedList<Orders>());
         model.addAttribute("ordersDetails", orderDetailsService.getAllOrderDetails());
         model.addAttribute("users", userService.getUsers());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        switch (sel){
+        switch (sel) {
             case 1: {
                 List<Orders> resultList = new LinkedList();
                 resultList.add(orderService.read(idOrder));
                 model.addAttribute("ordersInWork", resultList);
                 return "orders";
             }
-            case 2:{
+            case 2: {
                 Date dateController1 = sdf.parse(date1);
                 Date dateTemp = sdf.parse(date2);
                 Date dateController2 = new Date(dateTemp.getTime() + (1000 * 60 * 60 * 24));
@@ -217,10 +217,10 @@ public class ManagerController {
                 model.addAttribute("ordersInWork", orderService.getOrdersByPeriodDate(dateController1, dateController2));
                 return "orders";
             }
-            case 3:{
+            case 3: {
                 Date dateController1 = sdf.parse(date1);
                 Date dateController2 = new Date(dateController1.getTime() + (1000 * 60 * 60 * 24));
-                model.addAttribute("ordersInWork",orderService.getOrdersByPeriodDate(dateController1, dateController2));
+                model.addAttribute("ordersInWork", orderService.getOrdersByPeriodDate(dateController1, dateController2));
                 return "orders";
             }
 
@@ -237,7 +237,7 @@ public class ManagerController {
         //orders.getClass()
         List<OrderDetails> list = new LinkedList<>();
         list.addAll(orderDetailsService.getOrderDetailsByOrder(orderService.read(id)));
-        for (OrderDetails or:list){
+        for (OrderDetails or : list) {
             int oldValueQuantity = productAttributeService.getProductAttributeByProduct(or.getProduct()).getValue();
             ProductAttribute productAttribute = productAttributeService.getProductAttributeByProduct(or.getProduct());
             productAttribute.setValue(oldValueQuantity - or.getQuantity());

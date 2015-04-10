@@ -11,6 +11,6 @@
     <title>нет контента</title>
 </head>
 <body>
-  <img src="${pageContext.request.contextPath}/sources/img/noProduct.jpg"/>
+<img src="${pageContext.request.contextPath}/sources/img/noProduct.jpg"/>
 </body>
 </html>

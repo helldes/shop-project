@@ -9,22 +9,22 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <table class="table table-condensed">
-  <tr>
-    <td>NAME</td>
-    <td>CATEGORY</td>
-    <td>DESCRIPTION</td>
-    <td>PRICE</td>
-    <td>BRAND</td>
-    <td>COUNT</td>
-  </tr>
-  <c:forEach var="detal" items="${listOrderDetails}">
     <tr>
-      <td>${detal.getProduct().getName()}</td>
-      <td>${detal.getProduct().getCategory().getName()}</td>
-      <td>${detal.getProduct().getDescription()}</td>
-      <td>${detal.getProduct().getPrice()}</td>
-      <td>${detal.getProduct().getBrand().getName()}</td>
-      <td>${detal.getQuantity()}</td>
+        <td>NAME</td>
+        <td>CATEGORY</td>
+        <td>DESCRIPTION</td>
+        <td>PRICE</td>
+        <td>BRAND</td>
+        <td>COUNT</td>
     </tr>
-  </c:forEach>
+    <c:forEach var="detal" items="${listOrderDetails}">
+        <tr>
+            <td>${detal.getProduct().getName()}</td>
+            <td>${detal.getProduct().getCategory().getName()}</td>
+            <td>${detal.getProduct().getDescription()}</td>
+            <td>${detal.getProduct().getPrice()}</td>
+            <td>${detal.getProduct().getBrand().getName()}</td>
+            <td>${detal.getQuantity()}</td>
+        </tr>
+    </c:forEach>
 </table>

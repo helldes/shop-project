@@ -6,7 +6,7 @@
         var formData = {};
         var formArray = this.serializeArray();
 
-        for(var i = 0, n = formArray.length; i < n; ++i)
+        for (var i = 0, n = formArray.length; i < n; ++i)
             formData[formArray[i].name] = formArray[i].value;
 
         return formData;
@@ -15,7 +15,7 @@
 
     function editProduct() {
         var msg = $('#editForm').serializeObject();
-  //      var idProduct = document.getElementById();
+        //      var idProduct = document.getElementById();
         $.ajax({
             type: 'POST',
             url: '${pageContext.request.contextPath}/admin/product_edit',
@@ -30,23 +30,20 @@
         });
     }
 
-    $("#addForm").submit(function(e)
-    {
+    $("#addForm").submit(function (e) {
         var formData = new FormData(this);
         $.ajax({
             url: '${pageContext.request.contextPath}/admin/product_add',
             type: 'POST',
-            data:  formData,
-            mimeType:"multipart/form-data",
+            data: formData,
+            mimeType: "multipart/form-data",
             contentType: false,
             cache: false,
-            processData:false,
-            success: function(data, textStatus, jqXHR)
-            {
+            processData: false,
+            success: function (data, textStatus, jqXHR) {
                 show('/admin/product_get');
             },
-            error: function(jqXHR, textStatus, errorThrown)
-            {
+            error: function (jqXHR, textStatus, errorThrown) {
             }
         });
     });
@@ -66,7 +63,7 @@
 
     }
     function editRow(id, code, name, category, description, price, brand, disable) {
-        $.get("${pageContext.request.contextPath}/admin/product_details/"+id, function (data) {
+        $.get("${pageContext.request.contextPath}/admin/product_details/" + id, function (data) {
             document.getElementById("editCountProductModal").value = data[0];
             document.getElementById("editProductAttribute").value = data[1];
 
@@ -101,7 +98,8 @@
             </div>
             <div class="modal-body">
                 <!-- The form is placed inside the body of modal -->
-                <form id="addForm" class="form-horizontal" action="javascript:void(null);"  enctype="multipart/form-data" >
+                <form id="addForm" class="form-horizontal" action="javascript:void(null);"
+                      enctype="multipart/form-data">
                     <div class="form-group">
 
                         <div class="form-group">
@@ -195,7 +193,7 @@
                             <label class="col-xs-3 control-label">Count</label>
 
                             <div class="col-xs-5  col-lg-6">
-                                <input type="number" min="0"  class="form-control" name="addCountProductModal"
+                                <input type="number" min="0" class="form-control" name="addCountProductModal"
                                        id="addCountProductModal"/>
                             </div>
                         </div>
@@ -317,21 +315,22 @@
                             <label class="col-xs-3 control-label">Measure</label>
 
                             <div class="col-xs-5 col-lg-6">
-                                <input type="text" name="attribute" id="editProductAttribute" class="form-control" disabled="disabled"/>
+                                <input type="text" name="attribute" id="editProductAttribute" class="form-control"
+                                       disabled="disabled"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-xs-3 control-label">Count</label>
 
                             <div class="col-xs-5  col-lg-6">
-                                <input type="number" min="0"  class="form-control" name="count"
+                                <input type="number" min="0" class="form-control" name="count"
                                        id="editCountProductModal"/>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-xs-5 col-xs-offset-9">
-                            <button type="submit" class="btn btn-default"  onclick="editProduct()">Save</button>
+                            <button type="submit" class="btn btn-default" onclick="editProduct()">Save</button>
                         </div>
                     </div>
 

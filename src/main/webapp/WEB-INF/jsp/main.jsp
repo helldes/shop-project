@@ -15,16 +15,16 @@
         var formData = {};
         var formArray = this.serializeArray();
 
-        for(var i = 0, n = formArray.length; i < n; ++i)
+        for (var i = 0, n = formArray.length; i < n; ++i)
             formData[formArray[i].name] = formArray[i].value;
 
         return formData;
     };
-    jQuery(function($){
+    jQuery(function ($) {
         $("#phoneUserModal").mask("(999)-999-9999");
     });
 
-    function LoginUser(){
+    function LoginUser() {
         var pass = document.forms["loginForm"]["j_password"].value;
         document.forms["loginForm"]["j_password"].value = CryptoJS.SHA1(pass);
     }
@@ -71,7 +71,7 @@
                                             contentType: 'application/json',
                                             data: JSON.stringify(msg),
                                             success: function (data) {
-                                                $("#closer").trigger( "click" );
+                                                $("#closer").trigger("click");
                                             },
                                             error: function () {
                                                 alert('Error save User');
@@ -253,7 +253,8 @@
 
                 <c:forEach var="categoryUser" items="${categorysForUser}">
                     <c:if test="${categoryUser.getParent() == null}">
-                        <ul class="nav nav-stacked"><a href="#" onclick="ShowProducts(${categoryUser.getId()});" style="color:#000080"><h4>${categoryUser.name}</h4></a>
+                        <ul class="nav nav-stacked"><a href="#" onclick="ShowProducts(${categoryUser.getId()});"
+                                                       style="color:#000080"><h4>${categoryUser.name}</h4></a>
 
                             <c:forEach var="podCategoryUser" items="${categorysForUser}">
                                 <c:if test="${podCategoryUser.getParent().getId() == categoryUser.getId()}">
@@ -421,7 +422,8 @@
                             <label class="col-xs-3 control-label">Phone</label>
 
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" data-mask-reverse="true" data-mask="(000)-000-0000" name="phone" id="phoneUserModal"/>
+                                <input type="text" class="form-control" data-mask-reverse="true"
+                                       data-mask="(000)-000-0000" name="phone" id="phoneUserModal"/>
                             </div>
                             <h5>
                                 <small>(Format: (XXX)-XXX-XXXX)</small>
@@ -441,7 +443,8 @@
                     <div class="form-group">
                         <div class="col-xs-5 col-xs-offset-9">
                             <button type="submit" class="btn btn-default">Save</button>
-                            <button type="button" id="closer" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" id="closer" class="btn btn-default" data-dismiss="modal">Close
+                            </button>
                         </div>
                     </div>
                 </form>

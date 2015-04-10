@@ -5,9 +5,9 @@
   Time: 13:15
   To change this template use File | Settings | File Templates.
 --%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@page session="true"%>
+<%@page session="true" %>
 <html>
 <head>
     <meta charset="utf8">
@@ -28,7 +28,7 @@
 <script>
     function showOrderDetails(idOrder) {
         $('#showOrderDetails').empty();
-        $.get("${pageContext.request.contextPath}/orders/"+idOrder, function (data) {
+        $.get("${pageContext.request.contextPath}/orders/" + idOrder, function (data) {
             $('#showOrderDetails').html(data);
         });
     }
@@ -82,19 +82,24 @@
     <div id="sidebar-wrapper" class="col-md-1">
         <div id="sidebar" class="">
             <ul class="nav list-group">
-                <li onclick="show('/admin/category_get')"><a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>Category</a>
+                <li onclick="show('/admin/category_get')"><a class="list-group-item" href="#"><i
+                        class="icon-home icon-1x"></i>Category</a>
 
                 </li>
-                <li onclick="show('/admin/brand_get')"><a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>Brand</a>
+                <li onclick="show('/admin/brand_get')"><a class="list-group-item" href="#"><i
+                        class="icon-home icon-1x"></i>Brand</a>
 
                 </li>
-                <li onclick="show('/admin/attribute_get')"><a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>Attribute</a>
+                <li onclick="show('/admin/attribute_get')"><a class="list-group-item" href="#"><i
+                        class="icon-home icon-1x"></i>Attribute</a>
 
                 </li>
-                <li onclick="show('/admin/product_get')"><a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>Product</a>
+                <li onclick="show('/admin/product_get')"><a class="list-group-item" href="#"><i
+                        class="icon-home icon-1x"></i>Product</a>
 
                 </li>
-                <li onclick="show('/admin/user_get')"><a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>Users</a>
+                <li onclick="show('/admin/user_get')"><a class="list-group-item" href="#"><i
+                        class="icon-home icon-1x"></i>Users</a>
 
                 </li>
             </ul>

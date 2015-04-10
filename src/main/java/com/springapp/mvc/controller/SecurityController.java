@@ -26,10 +26,10 @@ public class SecurityController {
 
         User user = userService.getUser(userName);
 
-        if (user.getRole().getName().equals("ADMIN")){
+        if (user.getRole().getName().equals("ADMIN")) {
             return "admin";
         } else {
-            if (user.getRole().getName().equals("MANAGER")){
+            if (user.getRole().getName().equals("MANAGER")) {
                 return "managerPage";
             }
         }

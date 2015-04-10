@@ -18,9 +18,9 @@
 
     }
 
-    function changeSort(idCategory){
+    function changeSort(idCategory) {
         var sel = document.getElementById("sort").value;
-        $.get("${pageContext.request.contextPath}/sortProducts/" + sel + "/" + idCategory, function(data){
+        $.get("${pageContext.request.contextPath}/sortProducts/" + sel + "/" + idCategory, function (data) {
             $("#contentProduct").html(data);
             document.getElementById("sort").value = sel;
         });

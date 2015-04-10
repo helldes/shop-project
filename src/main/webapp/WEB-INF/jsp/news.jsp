@@ -19,7 +19,7 @@
   };
 
   function deleteNews(idNews){
-    $.get("${pageContext.request.contextPath}/orders/news_delete/"+idNews, function (data) {
+    $.get("${pageContext.request.contextPath}/orders/news_delete/" + idNews, function (data) {
       showNews('/news_get');
     });
   }
